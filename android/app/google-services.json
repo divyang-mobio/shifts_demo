@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "517788580770",
+    "project_id": "wts-shift",
+    "storage_bucket": "wts-shift.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517788580770:android:566f775e1304ef0a13d0fb",
+        "android_client_info": {
+          "package_name": "com.example.shifts_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517788580770-g09lno9crgrg9unmes8lbpjictb4b0e7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shifts_demo",
+            "certificate_hash": "40ba2b36c3b2132b02e6cd25f6b9727f942e6839"
+          }
+        },
+        {
+          "client_id": "517788580770-cbgt6llas4m2mnomu2g6lc99b7hr9jee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8gDj5rZlLzbkHJMUMvuoDvClf2lGKmeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517788580770-cbgt6llas4m2mnomu2g6lc99b7hr9jee.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
