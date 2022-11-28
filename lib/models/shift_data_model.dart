@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shifts_demo/models/activity_model.dart';
 
 part 'shift_data_model.g.dart';
 
 @JsonSerializable()
 class ShiftData {
   String? id;
-  List<String> activity;
+  List<ActivityModel> activity;
   String projectName, memberName;
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
   DateTime date;

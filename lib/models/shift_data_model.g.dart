@@ -9,8 +9,9 @@ part of 'shift_data_model.dart';
 ShiftData _$ShiftDataFromJson(Map<String, dynamic> json) => ShiftData(
       id: json['id'] as String?,
       projectName: json['projectName'] as String,
-      activity:
-          (json['activity'] as List<dynamic>).map((e) => e as String).toList(),
+      activity: (json['activity'] as List<dynamic>)
+          .map((e) => ActivityModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       memberName: json['memberName'] as String,
       date: ShiftData._fromJson(json['date'] as Timestamp),
     );
