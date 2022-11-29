@@ -5,7 +5,7 @@ abstract class ActivityState {}
 class ActivityInitial extends ActivityState {}
 
 class ActivityLoaded extends ActivityState {
-  ShiftData data;
+  List<ActivityModel> data;
   bool newDataAdded;
 
   ActivityLoaded({required this.data, required this.newDataAdded});

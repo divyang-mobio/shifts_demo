@@ -7,19 +7,17 @@ part of 'shift_data_model.dart';
 // **************************************************************************
 
 ShiftData _$ShiftDataFromJson(Map<String, dynamic> json) => ShiftData(
-      id: json['id'] as String?,
+      id: json['id'] as int?,
       projectName: json['projectName'] as String,
-      activity: (json['activity'] as List<dynamic>)
-          .map((e) => ActivityModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      isUploaded: ShiftData._fromIsUploadJson(json['isUploaded'] as int),
       memberName: json['memberName'] as String,
-      date: ShiftData._fromJson(json['date'] as Timestamp),
+      date: json['date'] as String,
     );
 
 Map<String, dynamic> _$ShiftDataToJson(ShiftData instance) => <String, dynamic>{
       'id': instance.id,
-      'activity': instance.activity,
       'projectName': instance.projectName,
       'memberName': instance.memberName,
-      'date': ShiftData._toJson(instance.date),
+      'date': instance.date,
+      'isUploaded': ShiftData._toIsUploadJson(instance.isUploaded),
     };

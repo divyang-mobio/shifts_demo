@@ -61,7 +61,7 @@ class _NewShiftScreenState extends State<NewShiftScreen> {
                 dateTime != null &&
                 projectName != null) {
               BlocProvider.of<OpenShiftBloc>(context).add(UpLoadData(
-                  dateTime: dateTime!,
+                  dateTime: DateFormat('dd MMM, kk:mm').format(dateTime!),
                   projectName: projectName!,
                   memberName: _controller.text));
               Navigator.pop(context);

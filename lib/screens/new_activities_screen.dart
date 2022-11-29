@@ -76,13 +76,16 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
                 endTime != null &&
                 locationName != null &&
                 activityName != null) {
-              BlocProvider.of<ActivityBloc>(context, listen: false).add(AddActivity(
-                  data: widget.data,
-                  activityModel: ActivityModel(
-                      activityName: activityName!,
-                      locationName: locationName!,
-                      endTime: endTime!,
-                      comments: _controller.text)));
+              BlocProvider.of<ActivityBloc>(context, listen: false).add(
+                  AddActivity(
+                      data: widget.data,
+                      activityModel: ActivityModel(
+                          shift_id: widget.data.id!,
+                          activityName: activityName!,
+                          locationName: locationName!,
+                          endTime: DateFormat('dd MMM, kk:mm').format(endTime!),
+                          comments: _controller.text,
+                          isUploaded: false)));
               Navigator.pop(context);
             }
           }, title: 'Log')

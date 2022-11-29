@@ -5,23 +5,27 @@ part 'activity_model.g.dart';
 
 @JsonSerializable()
 class ActivityModel {
-  String activityName, locationName, comments;
-  @JsonKey(fromJson: _fromJson, toJson: _toJson)
-  DateTime endTime;
+  int shift_id;
+  String activityName, locationName, comments, endTime;
+  @JsonKey(fromJson: _fromIsUploadJson, toJson: _toIsUploadJson)
+  bool isUploaded;
 
   ActivityModel(
       {required this.activityName,
       required this.locationName,
+      required this.shift_id,
       required this.endTime,
+      required this.isUploaded,
       required this.comments});
 
-  static DateTime _fromJson(Timestamp date) {
-    DateTime dataTime = DateTime.parse(date.toDate().toString());
-    return dataTime;
+  static bool _fromIsUploadJson(int data) {
+    bool isUploaded = (data == 0) ? false : true;
+    return isUploaded;
   }
 
-  static DateTime _toJson(DateTime date) {
-    return date;
+  static int _toIsUploadJson(bool data) {
+    int isUploaded = (data) ? 1 : 0;
+    return isUploaded;
   }
 
   factory ActivityModel.fromJson(Map<String, dynamic> json) =>

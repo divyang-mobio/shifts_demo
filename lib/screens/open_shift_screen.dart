@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:shifts_demo/controller/activity_bloc/activity_bloc.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
-import 'package:shifts_demo/utils/firestore_service.dart';
 
 import '../controller/open_shift_bloc/open_shift_bloc.dart';
 
@@ -51,21 +48,19 @@ class _OpenShiftListScreenState extends State<OpenShiftListScreen> {
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                          subtitle: Text(
-                              DateFormat('dd MMM, kk:mm')
-                                  .format(state.data[index].date),
+                          subtitle: Text(state.data[index].date,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
-                          trailing: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 0, 158, 61),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(40))),
-                              child: Text(
-                                  '${state.data[index].activity.length}',
-                                  style: const TextStyle(color: Colors.white))),
+                          // trailing: Container(
+                          //     padding: const EdgeInsets.all(8),
+                          //     decoration: const BoxDecoration(
+                          //         color: Color.fromARGB(255, 0, 158, 61),
+                          //         borderRadius:
+                          //             BorderRadius.all(Radius.circular(40))),
+                          //     child: Text(
+                          //         '${state.data[index].activity.length}',
+                          //         style: const TextStyle(color: Colors.white))),
                         ),
                       ));
             } else {

@@ -44,29 +44,28 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
             },
             builder: (context, state) {
               if (state is ActivityLoaded) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.data.activity.length,
-                  itemBuilder: (context, index) => ListTile(
-                    shape: const Border(
-                        bottom: BorderSide(color: Colors.grey, width: 1)),
-                    leading: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 0, 158, 61),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(40))),
-                        child: const Text('50%',
-                            style: TextStyle(color: Colors.white))),
-                    title: Text(state.data.activity[index].activityName,
-                        style: const TextStyle(fontSize: 20)),
-                    subtitle: Text(
-                        DateFormat('dd MMM, kk:mm')
-                            .format(state.data.activity[index].endTime),
-                        style: const TextStyle(color: Colors.black)),
-                  ),
-                );
+                return Text(state.data.length.toString());
+                // return ListView.builder(
+                //   shrinkWrap: true,
+                //   physics: const NeverScrollableScrollPhysics(),
+                //   itemCount: state.data.activity?.length,
+                //   itemBuilder: (context, index) => ListTile(
+                //     shape: const Border(
+                //         bottom: BorderSide(color: Colors.grey, width: 1)),
+                //     leading: Container(
+                //         padding: const EdgeInsets.all(8),
+                //         decoration: const BoxDecoration(
+                //             color: Color.fromARGB(255, 0, 158, 61),
+                //             borderRadius:
+                //                 BorderRadius.all(Radius.circular(40))),
+                //         child: const Text('50%',
+                //             style: TextStyle(color: Colors.white))),
+                //     title: Text(state.data.activity![index].activityName,
+                //         style: const TextStyle(fontSize: 20)),
+                //     subtitle: Text(state.data.activity![index].endTime,
+                //         style: const TextStyle(color: Colors.black)),
+                //   ),
+                // );
               } else {
                 return const CircularProgressIndicator.adaptive();
               }
