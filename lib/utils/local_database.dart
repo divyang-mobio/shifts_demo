@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shifts_demo/models/activity_model.dart';
+import 'package:shifts_demo/models/shift_activity_model.dart';
 import 'package:shifts_demo/models/shift_data_model.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -23,7 +24,7 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
   CREATE TABLE SHIFT(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id,
     projectName TEXT,
     memberName TEXT,
     isUploaded INTEGER,
@@ -67,9 +68,10 @@ class DatabaseHelper {
     return await db.insert('ACTIVITY', data.toJson());
   }
 
-  Future<List<ActivityModel>> getActivityData() async {
+  Future<List<ActivityModel>> getActivityData(int id) async {
     Database db = await instance.database;
-    var data = await db.query('ACTIVITY');
+    var data =
+        await db.query('ACTIVITY', where: "shift_id = ?", whereArgs: [id]);
     List<ActivityModel> dataList = data.isNotEmpty
         ? data.map((c) => ActivityModel.fromJson(c)).toList()
         : [];
@@ -79,5 +81,61 @@ class DatabaseHelper {
   Future<int> deleteActivityData(int id) async {
     Database db = await instance.database;
     return await db.delete('ACTIVITY', where: "id = ?", whereArgs: [id]);
+  }
+
+  Future<List<ShiftData>> getUnUploadedShiftData() async {
+    Database db = await instance.database;
+    var data = await db.query('SHIFT', where: "isUploaded = ?", whereArgs: [0]);
+    List<ShiftData> dataList =
+        data.isNotEmpty ? data.map((c) => ShiftData.fromJson(c)).toList() : [];
+    return dataList;
+  }
+
+  Future<List<ActivityModel>> getUnUploadedActivityData() async {
+    Database db = await instance.database;
+    var data =
+        await db.query('ACTIVITY', where: "isUploaded = ?", whereArgs: [0]);
+    List<ActivityModel> dataList = data.isNotEmpty
+        ? data.map((c) => ActivityModel.fromJson(c)).toList()
+        : [];
+    return dataList;
+  }
+
+  Future<List<ShiftActivityModel>> getShiftActivityData() async {
+    Database db = await instance.database;
+    var data = await db.query('SHIFT');
+    List<ShiftData> dataList =
+        data.isNotEmpty ? data.map((c) => ShiftData.fromJson(c)).toList() : [];
+    if (dataList.isEmpty) {
+      return [];
+    } else {
+      var datas = await db.query('ACTIVITY');
+      List<ActivityModel> activityList = datas.isNotEmpty
+          ? datas.map((c) => ActivityModel.fromJson(c)).toList()
+          : [];
+      List<ShiftActivityModel> shiftActivityModel = dataList
+          .map((e) => ShiftActivityModel(
+              projectName: e.projectName,
+              id: e.id.toString(),
+              activity: (activityList.isEmpty)
+                  ? []
+                  : activityList
+                      .map((f) => (f.shift_id == e.id)
+                          ? ActivityShiftModel(
+                              activityName: f.activityName,
+                              locationName: f.locationName,
+                              endTime: f.endTime,
+                              isUploaded: f.isUploaded,
+                              comments: f.comments)
+                          : null)
+                      .whereType<ActivityShiftModel>()
+                      .toList(),
+              isUploaded: e.isUploaded,
+              memberName: e.memberName,
+              date: e.date))
+          .toList();
+
+      return shiftActivityModel;
+    }
   }
 }

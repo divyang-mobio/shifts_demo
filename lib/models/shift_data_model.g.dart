@@ -7,7 +7,7 @@ part of 'shift_data_model.dart';
 // **************************************************************************
 
 ShiftData _$ShiftDataFromJson(Map<String, dynamic> json) => ShiftData(
-      id: json['id'] as int?,
+      id: json['id'] as int,
       projectName: json['projectName'] as String,
       isUploaded: ShiftData._fromIsUploadJson(json['isUploaded'] as int),
       memberName: json['memberName'] as String,

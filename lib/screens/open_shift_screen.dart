@@ -52,15 +52,15 @@ class _OpenShiftListScreenState extends State<OpenShiftListScreen> {
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black)),
-                          // trailing: Container(
-                          //     padding: const EdgeInsets.all(8),
-                          //     decoration: const BoxDecoration(
-                          //         color: Color.fromARGB(255, 0, 158, 61),
-                          //         borderRadius:
-                          //             BorderRadius.all(Radius.circular(40))),
-                          //     child: Text(
-                          //         '${state.data[index].activity.length}',
-                          //         style: const TextStyle(color: Colors.white))),
+                          trailing: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 0, 158, 61),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40))),
+                              child: Text(
+                                  '${state.data[index].activity.length}',
+                                  style: const TextStyle(color: Colors.white))),
                         ),
                       ));
             } else {

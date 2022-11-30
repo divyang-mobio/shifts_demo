@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shifts_demo/controller/activity_bloc/activity_bloc.dart';
+import 'package:shifts_demo/controller/sync_data_bloc/sync_data_bloc.dart';
 import 'package:shifts_demo/screens/activities_screen.dart';
 import 'package:shifts_demo/screens/new_activities_screen.dart';
 import 'controller/open_shift_bloc/open_shift_bloc.dart';
-import 'models/shift_data_model.dart';
+import 'models/shift_activity_model.dart';
 import 'screens/new_shift_screen.dart';
 import 'screens/open_shift_screen.dart';
 import 'screens/home_screen.dart';
@@ -23,12 +24,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<ActivityBloc>(
-          create: (context) => ActivityBloc(),
-        ),
+        BlocProvider<ActivityBloc>(create: (context) => ActivityBloc()),
         BlocProvider<OpenShiftBloc>(
-          create: (context) => OpenShiftBloc()..add(GetData()),
-        )
+            create: (context) => OpenShiftBloc()..add(GetData())),
+        BlocProvider<SyncDataBloc>(create: (context) => SyncDataBloc())
       ],
       child: MaterialApp(
           title: 'Flutter Demo',
@@ -51,11 +50,11 @@ class RouteGenerator {
       case '/newShift':
         return MaterialPageRoute(builder: (context) => const NewShiftScreen());
       case '/Activity':
-        final args = settings.arguments as ShiftData;
+        final args = settings.arguments as ShiftActivityModel;
         return MaterialPageRoute(
             builder: (context) => ActivitiesScreen(data: args));
       case '/newActivities':
-        final args = settings.arguments as ShiftData;
+        final args = settings.arguments as ShiftActivityModel;
         return MaterialPageRoute(
             builder: (context) => NewActivitiesScreen(data: args));
       default:

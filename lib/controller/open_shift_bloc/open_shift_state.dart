@@ -5,7 +5,7 @@ abstract class OpenShiftState {}
 class OpenShiftInitial extends OpenShiftState {}
 
 class OpenShiftLoaded extends OpenShiftState {
-  List<ShiftData> data;
+  List<ShiftActivityModel> data;
 
   OpenShiftLoaded({required this.data});
 }

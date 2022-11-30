@@ -1,22 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shifts_demo/models/activity_model.dart';
 
 part 'shift_data_model.g.dart';
 
 @JsonSerializable()
 class ShiftData {
-  int? id;
-
-  // List<ActivityModel>? activity;
+  int id;
   String projectName, memberName, date;
   @JsonKey(fromJson: _fromIsUploadJson, toJson: _toIsUploadJson)
   bool isUploaded;
 
   ShiftData(
-      {this.id,
+      {required this.id,
       required this.projectName,
-      // this.activity,
       required this.isUploaded,
       required this.memberName,
       required this.date});

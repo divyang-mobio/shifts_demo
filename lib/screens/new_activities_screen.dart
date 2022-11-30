@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shifts_demo/controller/activity_bloc/activity_bloc.dart';
 import 'package:shifts_demo/models/activity_model.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
 import 'package:shifts_demo/widgets/common_widgets.dart';
+import '../models/shift_activity_model.dart';
 import '../resources/list_resources.dart';
 
 class NewActivitiesScreen extends StatefulWidget {
   const NewActivitiesScreen({Key? key, required this.data}) : super(key: key);
 
-  final ShiftData data;
+  final ShiftActivityModel data;
 
   @override
   State<NewActivitiesScreen> createState() => _NewActivitiesScreenState();
@@ -20,6 +20,7 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
   String? activityName, locationName;
   DateTime? endTime;
   final TextEditingController _controller = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +77,11 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
                 endTime != null &&
                 locationName != null &&
                 activityName != null) {
-              BlocProvider.of<ActivityBloc>(context, listen: false).add(
+              BlocProvider.of<ActivityBloc>(context).add(
                   AddActivity(
                       data: widget.data,
                       activityModel: ActivityModel(
-                          shift_id: widget.data.id!,
+                          shift_id: int.parse( widget.data.id.toString()),
                           activityName: activityName!,
                           locationName: locationName!,
                           endTime: DateFormat('dd MMM, kk:mm').format(endTime!),
