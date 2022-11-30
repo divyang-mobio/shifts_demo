@@ -8,4 +8,8 @@ class SyncDataUploadingData extends SyncDataState {}
 
 class SyncDataGettingData extends SyncDataState {}
 
+class SyncDataSuccess extends SyncDataState {}
+
+class NoInternet extends SyncDataState {}
+
 class SyncDataError extends SyncDataState {}

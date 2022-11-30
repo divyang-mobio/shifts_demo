@@ -5,8 +5,7 @@ part 'activity_model.g.dart';
 
 @JsonSerializable()
 class ActivityModel {
-  int shift_id;
-  String activityName, locationName, comments, endTime;
+  String activityName, locationName, comments, endTime, shift_id;
   @JsonKey(fromJson: _fromIsUploadJson, toJson: _toIsUploadJson)
   bool isUploaded;
 

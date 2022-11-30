@@ -1,20 +1,19 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shifts_demo/models/shift_activity_model.dart';
-import '../models/shift_data_model.dart';
 
 class DatabaseService {
   final CollectionReference shiftCollection =
       FirebaseFirestore.instance.collection('shift');
 
-  Future<bool> setShiftDate({
+  Future<String> setShiftDate({
     required ShiftActivityModel shiftActivityModel,
   }) async {
     try {
       final ids = await shiftCollection.add(shiftActivityModel.toJson());
 
       await ids.update({'id': ids.id});
-      return true;
+      return ids.id;
     } catch (e) {
       throw 'error';
     }
@@ -33,13 +32,14 @@ class DatabaseService {
     }
   }
 
-  Future<List<ShiftData>> getShift() async {
+  Future<List<ShiftActivityModel>> getShift() async {
     try {
       final data =
-          await shiftCollection.orderBy('date', descending: false).get();
+          await shiftCollection.orderBy('date', descending: true).get();
 
-      List<ShiftData> shiftData = data.docs
-          .map((e) => ShiftData.fromJson(e.data() as Map<String, dynamic>))
+      List<ShiftActivityModel> shiftData = data.docs
+          .map((e) =>
+              ShiftActivityModel.fromJson(e.data() as Map<String, dynamic>))
           .toList();
       return shiftData;
     } catch (e) {

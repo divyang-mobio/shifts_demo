@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shifts_demo/controller/open_shift_bloc/open_shift_bloc.dart';
 import 'package:shifts_demo/controller/sync_data_bloc/sync_data_bloc.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -18,7 +19,6 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                print("object");
                 BlocProvider.of<SyncDataBloc>(context).add(SyncAllData());
               },
               icon: const Icon(Icons.sync))
@@ -45,9 +45,36 @@ class _MyHomePageState extends State<MyHomePage> {
                   )),
             ),
           ),
-          BlocBuilder<SyncDataBloc, SyncDataState>(
+          BlocConsumer<SyncDataBloc, SyncDataState>(
+            listener: (context, state) {
+              if (state is NoInternet) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(const SnackBar(content: Text('No Internet')));
+              }
+              if (state is SyncDataSuccess) {
+                BlocProvider.of<OpenShiftBloc>(context).add(DataSynced());
+              }
+            },
             builder: (context, state) {
               if (state is SyncDataUploadingData) {
+                return Container(
+                    alignment: AlignmentDirectional.center,
+                    height: 100,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: const [
+                          CircularProgressIndicator.adaptive(),
+                          SizedBox(height: 10),
+                          Flexible(child: Text("Uploading..."))
+                        ],
+                      ),
+                    ));
+              } else if (state is SyncDataGettingData) {
                 return Container(
                     height: 100,
                     width: 100,
@@ -60,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: const [
                           CircularProgressIndicator.adaptive(),
                           SizedBox(height: 10),
-                          Text("Uploading...")
+                          Flexible(child: Text("Getting..."))
                         ],
                       ),
                     ));

@@ -4,6 +4,8 @@ abstract class OpenShiftEvent {}
 
 class GetData extends OpenShiftEvent {}
 
+class DataSynced extends OpenShiftEvent {}
+
 class UpLoadData extends OpenShiftEvent {
   String projectName, memberName, dateTime;
 

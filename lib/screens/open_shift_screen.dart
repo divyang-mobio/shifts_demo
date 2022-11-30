@@ -26,25 +26,31 @@ class _OpenShiftListScreenState extends State<OpenShiftListScreen> {
                   icon: const Icon(Icons.add))
             ]),
         body: BlocConsumer<OpenShiftBloc, OpenShiftState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
+          listener: (context, state) {},
           builder: (context, state) {
             if (state is OpenShiftLoaded) {
               return ListView.builder(
                   itemCount: state.data.length,
-                  itemBuilder: (context, index) => GestureDetector(
+                  itemBuilder: (context, index) =>
+                      GestureDetector(
                         onTap: () {
-                          BlocProvider.of<ActivityBloc>(context)
-                              .add(ShowActivityList(data: state.data[index]));
-                          Navigator.pushNamed(context, '/Activity',
-                              arguments: state.data[index]);
+                          if (state.data[index].isUploaded) {
+                            BlocProvider.of<ActivityBloc>(context)
+                                .add(ShowActivityList(data: state.data[index]));
+                            Navigator.pushNamed(context, '/Activity',
+                                arguments: state.data[index]);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text(
+                                    'Sync Data First')));
+                          }
                         },
                         child: ListTile(
                           shape: const Border(
                               bottom: BorderSide(color: Colors.grey, width: 1)),
                           title: Text(
-                            "${state.data[index].projectName} : ${state.data[index].memberName}",
+                            "${state.data[index].projectName} : ${state
+                                .data[index].memberName}",
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
@@ -57,7 +63,7 @@ class _OpenShiftListScreenState extends State<OpenShiftListScreen> {
                               decoration: const BoxDecoration(
                                   color: Color.fromARGB(255, 0, 158, 61),
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(40))),
+                                  BorderRadius.all(Radius.circular(40))),
                               child: Text(
                                   '${state.data[index].activity.length}',
                                   style: const TextStyle(color: Colors.white))),

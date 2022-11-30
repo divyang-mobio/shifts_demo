@@ -10,7 +10,7 @@ ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) =>
     ActivityModel(
       activityName: json['activityName'] as String,
       locationName: json['locationName'] as String,
-      shift_id: json['shift_id'] as int,
+      shift_id: json['shift_id'] as String,
       endTime: json['endTime'] as String,
       isUploaded: ActivityModel._fromIsUploadJson(json['isUploaded'] as int),
       comments: json['comments'] as String,
@@ -18,10 +18,10 @@ ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ActivityModelToJson(ActivityModel instance) =>
     <String, dynamic>{
-      'shift_id': instance.shift_id,
       'activityName': instance.activityName,
       'locationName': instance.locationName,
       'comments': instance.comments,
       'endTime': instance.endTime,
+      'shift_id': instance.shift_id,
       'isUploaded': ActivityModel._toIsUploadJson(instance.isUploaded),
     };

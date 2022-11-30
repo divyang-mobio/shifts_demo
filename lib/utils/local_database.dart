@@ -24,7 +24,7 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
   CREATE TABLE SHIFT(
-    id,
+    id TEXT,
     projectName TEXT,
     memberName TEXT,
     isUploaded INTEGER,
@@ -38,7 +38,7 @@ class DatabaseHelper {
     activityName TEXT,
     locationName TEXT,
     comments TEXT,
-    shift_id INTEGER,
+    shift_id TEXT,
     isUploaded INTEGER,
     endTime TEXT
   )
@@ -81,6 +81,13 @@ class DatabaseHelper {
   Future<int> deleteActivityData(int id) async {
     Database db = await instance.database;
     return await db.delete('ACTIVITY', where: "id = ?", whereArgs: [id]);
+  }
+
+  Future<bool> deleteAllData() async {
+    Database db = await instance.database;
+    await db.delete('SHIFT');
+    await db.delete('ACTIVITY');
+    return true;
   }
 
   Future<List<ShiftData>> getUnUploadedShiftData() async {

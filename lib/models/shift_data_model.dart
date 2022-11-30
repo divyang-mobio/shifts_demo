@@ -4,7 +4,7 @@ part 'shift_data_model.g.dart';
 
 @JsonSerializable()
 class ShiftData {
-  int id;
+  String id;
   String projectName, memberName, date;
   @JsonKey(fromJson: _fromIsUploadJson, toJson: _toIsUploadJson)
   bool isUploaded;

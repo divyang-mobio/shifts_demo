@@ -21,7 +21,6 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
   DateTime? endTime;
   final TextEditingController _controller = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,16 +76,15 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
                 endTime != null &&
                 locationName != null &&
                 activityName != null) {
-              BlocProvider.of<ActivityBloc>(context).add(
-                  AddActivity(
-                      data: widget.data,
-                      activityModel: ActivityModel(
-                          shift_id: int.parse( widget.data.id.toString()),
-                          activityName: activityName!,
-                          locationName: locationName!,
-                          endTime: DateFormat('dd MMM, kk:mm').format(endTime!),
-                          comments: _controller.text,
-                          isUploaded: false)));
+              BlocProvider.of<ActivityBloc>(context).add(AddActivity(
+                  data: widget.data,
+                  activityModel: ActivityModel(
+                      shift_id: widget.data.id.toString(),
+                      activityName: activityName!,
+                      locationName: locationName!,
+                      endTime: DateFormat('dd MMM, kk:mm').format(endTime!),
+                      comments: _controller.text,
+                      isUploaded: false)));
               Navigator.pop(context);
             }
           }, title: 'Log')

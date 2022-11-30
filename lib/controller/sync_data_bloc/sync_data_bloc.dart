@@ -30,21 +30,45 @@ class SyncDataBloc extends Bloc<SyncDataEvent, SyncDataState> {
                     memberName: e.memberName,
                     date: e.date));
           }
-          List<ActivityModel> activityData =
-              await DatabaseHelper.instance.getUnUploadedActivityData();
-          if (activityData.isNotEmpty) {
-            for (final e in activityData) {
-              await DatabaseService().setActivityDate(
-                  id: e.shift_id.toString(),
-                  activityShiftModel: ActivityShiftModel(
-                      activityName: e.activityName,
-                      locationName: e.locationName,
-                      endTime: e.endTime,
-                      isUploaded: true,
-                      comments: e.comments));
-            }
+        }
+        List<ActivityModel> activityData =
+            await DatabaseHelper.instance.getUnUploadedActivityData();
+        if (activityData.isNotEmpty) {
+          for (final e in activityData) {
+            await DatabaseService().setActivityDate(
+                id: e.shift_id.toString(),
+                activityShiftModel: ActivityShiftModel(
+                    activityName: e.activityName,
+                    locationName: e.locationName,
+                    endTime: e.endTime,
+                    isUploaded: true,
+                    comments: e.comments));
           }
         }
+        emit(SyncDataGettingData());
+        List<ShiftActivityModel> data = await DatabaseService().getShift();
+        await DatabaseHelper.instance.deleteAllData();
+        for (final i in data) {
+          await DatabaseHelper.instance.addShiftData(ShiftData(
+              id: i.id as String,
+              projectName: i.projectName,
+              isUploaded: i.isUploaded,
+              memberName: i.memberName,
+              date: i.date));
+          for (final f in i.activity) {
+            await DatabaseHelper.instance.addActivityData(ActivityModel(
+                activityName: f.activityName,
+                locationName: f.locationName,
+                shift_id: i.id as String,
+                endTime: f.endTime,
+                isUploaded: f.isUploaded,
+                comments: f.comments));
+          }
+        }
+        emit(SyncDataSuccess());
+        emit(SyncDataInitial());
+      } else {
+        emit(NoInternet());
         emit(SyncDataInitial());
       }
     });
