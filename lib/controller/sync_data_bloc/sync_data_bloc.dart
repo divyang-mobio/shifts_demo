@@ -36,14 +36,34 @@ class SyncDataBloc extends Bloc<SyncDataEvent, SyncDataState> {
             await DatabaseHelper.instance.getUnUploadedActivityData();
         if (activityData.isNotEmpty) {
           for (final e in activityData) {
-            await DatabaseService().setActivityDate(
-                id: e.shift_id.toString(),
-                activityShiftModel: ActivityShiftModel(
-                    activityName: e.activityName,
-                    locationName: e.locationName,
-                    endTime: e.endTime,
-                    isUploaded: UploadingStatues.success,
-                    comments: e.comments));
+            if (e.isUploaded == UploadingStatues.notUploaded) {
+              await DatabaseService().setActivityDate(
+                  id: e.shift_id.toString(),
+                  activityShiftModel: ActivityShiftModel(
+                      activityName: e.activityName,
+                      locationName: e.locationName,
+                      endTime: e.endTime,
+                      isUploaded: UploadingStatues.success,
+                      comments: e.comments));
+            } else if (e.isUploaded == UploadingStatues.update) {
+              await DatabaseService().updateActivityDate(
+                  id: e.shift_id.toString(),
+                  activityShiftModel: ActivityShiftModel(
+                      activityName: e.activityName,
+                      locationName: e.locationName,
+                      endTime: e.endTime,
+                      isUploaded: UploadingStatues.success,
+                      comments: e.comments));
+            } else if (e.isUploaded == UploadingStatues.delete) {
+              await DatabaseService().deleteActivityDate(
+                  id: e.shift_id.toString(),
+                  activityShiftModel: ActivityShiftModel(
+                      activityName: e.activityName,
+                      locationName: e.locationName,
+                      endTime: e.endTime,
+                      isUploaded: UploadingStatues.success,
+                      comments: e.comments));
+            }
           }
         }
         emit(SyncDataGettingData());
