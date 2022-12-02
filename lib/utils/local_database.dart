@@ -68,6 +68,12 @@ class DatabaseHelper {
     return await db.insert('ACTIVITY', data.toJson());
   }
 
+  Future<int> updateActivityData(ActivityModel data) async {
+    Database db = await instance.database;
+    return await db.update('ACTIVITY', data.toJson(),
+        where: "id = ?", whereArgs: [data.id]);
+  }
+
   Future<List<ActivityModel>> getActivityData(int id) async {
     Database db = await instance.database;
     var data =
@@ -78,21 +84,9 @@ class DatabaseHelper {
     return dataList;
   }
 
-  Future<int> deleteActivityData(ActivityModel activityModel) async {
+  Future<int> deleteActivityData(int id) async {
     Database db = await instance.database;
-    return await db.delete('ACTIVITY',
-        where:
-            "activityName = ? and locationName = ? and comments = ? and shift_id = ? and endTime = ?",
-        whereArgs:
-            // return await db.rawDelete(
-            //     'SELECT FROM ACTIVITY WHERE activityName = ? and locationName = ? and comments = ? and shift_id = ? and endTime = ?',
-            [
-          activityModel.activityName,
-          activityModel.locationName,
-          activityModel.comments,
-          activityModel.shift_id,
-          activityModel.endTime
-        ]);
+    return await db.delete('ACTIVITY', where: "id = ?", whereArgs: [id]);
   }
 
   Future<bool> deleteAllData() async {
@@ -141,6 +135,7 @@ class DatabaseHelper {
                   : activityList
                       .map((f) => (f.shift_id == e.id)
                           ? ActivityShiftModel(
+                              id: f.id,
                               activityName: f.activityName,
                               locationName: f.locationName,
                               endTime: f.endTime,

@@ -31,6 +31,7 @@ Map<String, dynamic> _$ShiftActivityModelToJson(ShiftActivityModel instance) =>
 ActivityShiftModel _$ActivityShiftModelFromJson(Map<String, dynamic> json) =>
     ActivityShiftModel(
       activityName: json['activityName'] as String,
+      id: json['id'] as int?,
       locationName: json['locationName'] as String,
       endTime: json['endTime'] as String,
       isUploaded: ActivityShiftModel._fromUploadJson(json['isUploaded'] as int),
@@ -39,6 +40,7 @@ ActivityShiftModel _$ActivityShiftModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ActivityShiftModelToJson(ActivityShiftModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'activityName': instance.activityName,
       'locationName': instance.locationName,
       'comments': instance.comments,

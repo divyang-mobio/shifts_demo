@@ -39,7 +39,7 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
             listener: (context, state) {
               if (state is ActivityLoaded) {
                 if (state.newDataAdded) {
-                  BlocProvider.of<OpenShiftBloc>(context).add(GetData());
+                  BlocProvider.of<OpenShiftBloc>(context).add(DataSynced());
                 }
               }
             },

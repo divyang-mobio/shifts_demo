@@ -25,9 +25,10 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
       if (notSendDataActivity.isEmpty &&
           notSendDataShift.isEmpty &&
           isInternetAvailable) {
-        List<ShiftActivityModel> data = await DatabaseService().getShift();
+        List<ShiftActivityModel> dataUpdate =
+            await DatabaseService().getShift();
         await DatabaseHelper.instance.deleteAllData();
-        for (final i in data) {
+        for (final i in dataUpdate) {
           await DatabaseHelper.instance.addShiftData(ShiftData(
               id: i.id as String,
               projectName: i.projectName,
@@ -44,14 +45,11 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
                 comments: f.comments));
           }
         }
-        emit(OpenShiftLoaded(
-            data: data, isInternetConnected: isInternetAvailable));
-      } else {
-        List<ShiftActivityModel> data =
-            await DatabaseHelper.instance.getShiftActivityData();
-        emit(OpenShiftLoaded(
-            data: data, isInternetConnected: isInternetAvailable));
       }
+      List<ShiftActivityModel> data =
+          await DatabaseHelper.instance.getShiftActivityData();
+      emit(OpenShiftLoaded(
+          data: data, isInternetConnected: isInternetAvailable));
     });
 
     on<DataSynced>((event, emit) async {
@@ -62,46 +60,33 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
 
     on<UpLoadData>((event, emit) async {
       emit(OpenShiftInitial());
+      String? id;
 
       final isInternetAvailable = await InternetChecker().connectionCheck();
 
       if (isInternetAvailable) {
-        final id = await DatabaseService().setShiftDate(
+        id = await DatabaseService().setShiftDate(
             shiftActivityModel: ShiftActivityModel(
                 activity: [],
                 isUploaded: UploadingStatues.success,
                 projectName: event.projectName,
                 memberName: event.memberName,
                 date: event.dateTime));
-
-        await DatabaseHelper.instance.addShiftData(ShiftData(
-            id: id,
-            projectName: event.projectName,
-            isUploaded: isInternetAvailable
-                ? UploadingStatues.success
-                : UploadingStatues.notUploaded,
-            memberName: event.memberName,
-            date: event.dateTime));
-
-        List<ShiftActivityModel> data =
-            await DatabaseHelper.instance.getShiftActivityData();
-        emit(OpenShiftLoaded(
-            data: data, isInternetConnected: isInternetAvailable));
-      } else {
-        await DatabaseHelper.instance.addShiftData(ShiftData(
-            id: getRandomString(10),
-            projectName: event.projectName,
-            isUploaded: isInternetAvailable
-                ? UploadingStatues.success
-                : UploadingStatues.notUploaded,
-            memberName: event.memberName,
-            date: event.dateTime));
-
-        List<ShiftActivityModel> data =
-            await DatabaseHelper.instance.getShiftActivityData();
-        emit(OpenShiftLoaded(
-            data: data, isInternetConnected: isInternetAvailable));
       }
+
+      await DatabaseHelper.instance.addShiftData(ShiftData(
+          id: id ?? getRandomString(10),
+          projectName: event.projectName,
+          isUploaded: isInternetAvailable
+              ? UploadingStatues.success
+              : UploadingStatues.notUploaded,
+          memberName: event.memberName,
+          date: event.dateTime));
+
+      List<ShiftActivityModel> data =
+          await DatabaseHelper.instance.getShiftActivityData();
+      emit(OpenShiftLoaded(
+          data: data, isInternetConnected: isInternetAvailable));
     });
   }
 }

@@ -27,7 +27,8 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
                 isUploaded: UploadingStatues.success,
                 comments: event.activityModel.comments));
       }
-      await DatabaseHelper.instance.addActivityData(ActivityModel(
+      final id = await DatabaseHelper.instance.addActivityData(ActivityModel(
+          id: 0,
           activityName: event.activityModel.activityName,
           locationName: event.activityModel.locationName,
           shift_id: event.activityModel.shift_id,
@@ -37,6 +38,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
               : event.activityModel.isUploaded,
           comments: event.activityModel.comments));
       event.data.activity.add(ActivityShiftModel(
+          id: id,
           activityName: event.activityModel.activityName,
           locationName: event.activityModel.locationName,
           endTime: event.activityModel.endTime,
@@ -73,7 +75,8 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
                   comments: event.activityModel.comments));
         }
       }
-      await DatabaseHelper.instance.addActivityData(ActivityModel(
+      await DatabaseHelper.instance.updateActivityData(ActivityModel(
+          id: event.activityModel.id,
           activityName: event.activityModel.activityName,
           locationName: event.activityModel.locationName,
           shift_id: event.activityModel.shift_id,
@@ -83,6 +86,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
               : event.activityModel.isUploaded,
           comments: event.activityModel.comments));
       event.data.activity.add(ActivityShiftModel(
+          id: event.activityModel.id,
           activityName: event.activityModel.activityName,
           locationName: event.activityModel.locationName,
           endTime: event.activityModel.endTime,
@@ -99,8 +103,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
       final isInternetAvailable = await InternetChecker().connectionCheck();
 
       if (isInternetAvailable) {
-        if (event.statues != UploadingStatues.success) {
-        } else {
+        if (event.statues == UploadingStatues.success) {
           await DatabaseService().deleteActivityDate(
               id: event.activityModel.shift_id.toString(),
               activityShiftModel: ActivityShiftModel(
@@ -111,18 +114,10 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
                   comments: event.activityModel.comments));
         }
       }
-      await DatabaseHelper.instance.deleteActivityData(ActivityModel(
-          activityName: event.activityModel.activityName,
-          locationName: event.activityModel.locationName,
-          shift_id: event.activityModel.shift_id,
-          endTime: event.activityModel.endTime,
-          isUploaded: UploadingStatues.success,
-          comments: event.activityModel.comments));
-      event.data.activity.removeWhere((element) =>
-          element.endTime == event.activityModel.endTime &&
-          element.locationName == event.activityModel.locationName &&
-          element.comments == event.activityModel.comments &&
-          element.activityName == event.activityModel.activityName);
+      await DatabaseHelper.instance
+          .deleteActivityData(event.activityModel.id as int);
+      event.data.activity
+          .removeWhere((element) => element.id == event.activityModel.id);
 
       emit(ActivityLoaded(data: event.data, newDataAdded: true));
     });

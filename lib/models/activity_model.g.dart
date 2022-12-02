@@ -9,6 +9,7 @@ part of 'activity_model.dart';
 ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) =>
     ActivityModel(
       activityName: json['activityName'] as String,
+      id: json['id'] as int?,
       locationName: json['locationName'] as String,
       shift_id: json['shift_id'] as String,
       endTime: json['endTime'] as String,
@@ -18,6 +19,7 @@ ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ActivityModelToJson(ActivityModel instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'activityName': instance.activityName,
       'locationName': instance.locationName,
       'comments': instance.comments,

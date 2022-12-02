@@ -39,12 +39,14 @@ class ShiftActivityModel {
 
 @JsonSerializable()
 class ActivityShiftModel {
+  int? id;
   String activityName, locationName, comments, endTime;
   @JsonKey(fromJson: _fromUploadJson, toJson: _toUploadJson)
   UploadingStatues isUploaded;
 
   ActivityShiftModel(
       {required this.activityName,
+      this.id,
       required this.locationName,
       required this.endTime,
       required this.isUploaded,

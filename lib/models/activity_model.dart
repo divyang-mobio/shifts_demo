@@ -7,12 +7,15 @@ part 'activity_model.g.dart';
 
 @JsonSerializable()
 class ActivityModel {
+  int? id;
+
   String activityName, locationName, comments, endTime, shift_id;
   @JsonKey(fromJson: _fromUploadJson, toJson: _toUploadJson)
   UploadingStatues isUploaded;
 
   ActivityModel(
       {required this.activityName,
+      this.id,
       required this.locationName,
       required this.shift_id,
       required this.endTime,

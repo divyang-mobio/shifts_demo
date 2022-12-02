@@ -95,23 +95,25 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
           const SizedBox(height: 20),
           materialButton(context, onPressed: () {
             if (widget.isUpdate) {
-              if (_controller.text != widget.activityShiftModel?.comments ||
-                  endTime != widget.activityShiftModel?.endTime ||
-                  locationName != widget.activityShiftModel?.locationName ||
-                  activityName != widget.activityShiftModel?.activityName) {
-                BlocProvider.of<ActivityBloc>(context).add(UpdateActivity(
-                    statues: widget.activityShiftModel?.isUploaded
-                        as UploadingStatues,
-                    data: widget.data,
-                    activityModel: ActivityModel(
-                        shift_id: widget.data.id.toString(),
-                        activityName: activityName!,
-                        locationName: locationName!,
-                        endTime: endTime!,
-                        comments: _controller.text,
-                        isUploaded: UploadingStatues.update)));
-                Navigator.pop(context);
-              }
+              print(widget.activityShiftModel?.id);
+              // if (_controller.text != widget.activityShiftModel?.comments ||
+              //     endTime != widget.activityShiftModel?.endTime ||
+              //     locationName != widget.activityShiftModel?.locationName ||
+              //     activityName != widget.activityShiftModel?.activityName) {
+              //   BlocProvider.of<ActivityBloc>(context).add(UpdateActivity(
+              //       statues: widget.activityShiftModel?.isUploaded
+              //           as UploadingStatues,
+              //       data: widget.data,
+              //       activityModel: ActivityModel(
+              //           id: widget.activityShiftModel?.id,
+              //           shift_id: widget.data.id.toString(),
+              //           activityName: activityName!,
+              //           locationName: locationName!,
+              //           endTime: endTime!,
+              //           comments: _controller.text,
+              //           isUploaded: UploadingStatues.update)));
+              //   Navigator.pop(context);
+              // }
             } else {
               if (_controller.text != "" &&
                   endTime != null &&
@@ -139,6 +141,7 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
                 BlocProvider.of<ActivityBloc>(context).add(DeleteActivity(
                     data: widget.data,
                     activityModel: ActivityModel(
+                        id: widget.activityShiftModel?.id,
                         shift_id: widget.data.id.toString(),
                         activityName: activityName!,
                         locationName: locationName!,
