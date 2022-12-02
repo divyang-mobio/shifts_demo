@@ -33,64 +33,67 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
                 },
                 icon: const Icon(Icons.add))
           ]),
-      body: Column(
-        children: [
-          BlocConsumer<ActivityBloc, ActivityState>(
-            listener: (context, state) {
-              if (state is ActivityLoaded) {
-                if (state.newDataAdded) {
-                  BlocProvider.of<OpenShiftBloc>(context).add(DataSynced());
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            BlocConsumer<ActivityBloc, ActivityState>(
+              listener: (context, state) {
+                if (state is ActivityLoaded) {
+                  if (state.newDataAdded) {
+                    BlocProvider.of<OpenShiftBloc>(context).add(DataSynced());
+                  }
                 }
-              }
-            },
-            builder: (context, state) {
-              if (state is ActivityLoaded) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.data.activity.length,
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/newActivities',
-                          arguments: ScreenArguments(
-                              isUpdate: true,
-                              data: widget.data,
-                              activityData: state.data.activity[index]));
-                    },
-                    child: ListTile(
-                      shape: const Border(
-                          bottom: BorderSide(color: Colors.grey, width: 1)),
-                      leading: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 0, 158, 61),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40))),
-                          child: const Text('50%',
-                              style: TextStyle(color: Colors.white))),
-                      title: Text(state.data.activity[index].activityName,
-                          style: const TextStyle(fontSize: 20)),
-                      subtitle: Text(state.data.activity[index].endTime,
-                          style: const TextStyle(color: Colors.black)),
+              },
+              builder: (context, state) {
+                if (state is ActivityLoaded) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.data.activity.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/newActivities',
+                            arguments: ScreenArguments(
+                                index: index,
+                                isUpdate: true,
+                                data: widget.data,
+                                activityData: state.data.activity[index]));
+                      },
+                      child: ListTile(
+                        shape: const Border(
+                            bottom: BorderSide(color: Colors.grey, width: 1)),
+                        leading: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 0, 158, 61),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(40))),
+                            child: const Text('50%',
+                                style: TextStyle(color: Colors.white))),
+                        title: Text(state.data.activity[index].activityName,
+                            style: const TextStyle(fontSize: 20)),
+                        subtitle: Text(state.data.activity[index].endTime,
+                            style: const TextStyle(color: Colors.black)),
+                      ),
                     ),
-                  ),
-                );
-              } else {
-                return const CircularProgressIndicator.adaptive();
-              }
-            },
-          ),
-          const SizedBox(height: 20),
-          materialButton(context,
-              onPressed: () {},
-              title: 'Close Shift',
-              color: const Color.fromARGB(255, 244, 151, 17)),
-          const SizedBox(height: 20),
-          materialButton(context,
-              onPressed: () {},
-              title: 'Delete Shift',
-              color: const Color.fromARGB(255, 210, 10, 17))
-        ],
+                  );
+                } else {
+                  return const CircularProgressIndicator.adaptive();
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            materialButton(context,
+                onPressed: () {},
+                title: 'Close Shift',
+                color: const Color.fromARGB(255, 244, 151, 17)),
+            const SizedBox(height: 20),
+            materialButton(context,
+                onPressed: () {},
+                title: 'Delete Shift',
+                color: const Color.fromARGB(255, 210, 10, 17))
+          ],
+        ),
       ),
     );
   }

@@ -13,9 +13,13 @@ class UpdateActivity extends ActivityEvent {
   ShiftActivityModel data;
   ActivityModel activityModel;
   UploadingStatues statues;
+  int index;
 
   UpdateActivity(
-      {required this.data, required this.activityModel, required this.statues});
+      {required this.data,
+      required this.index,
+      required this.activityModel,
+      required this.statues});
 }
 
 class DeleteActivity extends ActivityEvent {

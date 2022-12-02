@@ -28,7 +28,6 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
                 comments: event.activityModel.comments));
       }
       final id = await DatabaseHelper.instance.addActivityData(ActivityModel(
-          id: 0,
           activityName: event.activityModel.activityName,
           locationName: event.activityModel.locationName,
           shift_id: event.activityModel.shift_id,
@@ -66,6 +65,7 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
                   comments: event.activityModel.comments));
         } else {
           await DatabaseService().updateActivityDate(
+              oldActivity: event.data.activity[event.index],
               id: event.activityModel.shift_id.toString(),
               activityShiftModel: ActivityShiftModel(
                   activityName: event.activityModel.activityName,
@@ -75,8 +75,11 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
                   comments: event.activityModel.comments));
         }
       }
-      await DatabaseHelper.instance.updateActivityData(ActivityModel(
-          id: event.activityModel.id,
+
+      await DatabaseHelper.instance
+          .deleteActivityData(event.activityModel.id as int);
+
+      await DatabaseHelper.instance.addActivityData(ActivityModel(
           activityName: event.activityModel.activityName,
           locationName: event.activityModel.locationName,
           shift_id: event.activityModel.shift_id,
@@ -85,16 +88,9 @@ class ActivityBloc extends Bloc<ActivityEvent, ActivityState> {
               ? UploadingStatues.success
               : event.activityModel.isUploaded,
           comments: event.activityModel.comments));
-      event.data.activity.add(ActivityShiftModel(
-          id: event.activityModel.id,
-          activityName: event.activityModel.activityName,
-          locationName: event.activityModel.locationName,
-          endTime: event.activityModel.endTime,
-          isUploaded: isInternetAvailable
-              ? UploadingStatues.success
-              : event.activityModel.isUploaded,
-          comments: event.activityModel.comments));
 
+      event.data.activity = await DatabaseHelper.instance
+          .getActivityData(event.activityModel.shift_id);
       emit(ActivityLoaded(data: event.data, newDataAdded: true));
     });
     on<DeleteActivity>((event, emit) async {

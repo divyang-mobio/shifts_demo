@@ -74,12 +74,12 @@ class DatabaseHelper {
         where: "id = ?", whereArgs: [data.id]);
   }
 
-  Future<List<ActivityModel>> getActivityData(int id) async {
+  Future<List<ActivityShiftModel>> getActivityData(String id) async {
     Database db = await instance.database;
     var data =
         await db.query('ACTIVITY', where: "shift_id = ?", whereArgs: [id]);
-    List<ActivityModel> dataList = data.isNotEmpty
-        ? data.map((c) => ActivityModel.fromJson(c)).toList()
+    List<ActivityShiftModel> dataList = data.isNotEmpty
+        ? data.map((c) => ActivityShiftModel.fromJson(c)).toList()
         : [];
     return dataList;
   }

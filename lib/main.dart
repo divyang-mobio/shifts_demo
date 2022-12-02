@@ -59,6 +59,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => NewActivitiesScreen(
                 data: args.data,
+                index: args.index,
                 isUpdate: args.isUpdate,
                 activityShiftModel: args.activityData));
       default:

@@ -47,11 +47,23 @@ class DatabaseService {
 
   Future<bool> updateActivityDate(
       {required String id,
+      required ActivityShiftModel oldActivity,
       required ActivityShiftModel activityShiftModel}) async {
     try {
       await shiftCollection.doc(id).update({
-        'activity': FieldValue.arrayRemove([activityShiftModel.toJson()]),
+        'activity': FieldValue.arrayRemove([
+          ActivityShiftModel(
+                  activityName: oldActivity.activityName,
+                  locationName: oldActivity.locationName,
+                  endTime: oldActivity.endTime,
+                  isUploaded: oldActivity.isUploaded,
+                  comments: oldActivity.comments)
+              .toJson()
+        ]),
       });
+      await shiftCollection.doc(id).set({
+        'activity': FieldValue.arrayUnion([activityShiftModel.toJson()]),
+      }, SetOptions(merge: true));
       return true;
     } catch (e) {
       throw 'error';

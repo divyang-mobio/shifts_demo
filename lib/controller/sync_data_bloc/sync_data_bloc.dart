@@ -45,15 +45,6 @@ class SyncDataBloc extends Bloc<SyncDataEvent, SyncDataState> {
                       endTime: e.endTime,
                       isUploaded: UploadingStatues.success,
                       comments: e.comments));
-            } else if (e.isUploaded == UploadingStatues.update) {
-              await DatabaseService().updateActivityDate(
-                  id: e.shift_id.toString(),
-                  activityShiftModel: ActivityShiftModel(
-                      activityName: e.activityName,
-                      locationName: e.locationName,
-                      endTime: e.endTime,
-                      isUploaded: UploadingStatues.success,
-                      comments: e.comments));
             } else if (e.isUploaded == UploadingStatues.delete) {
               await DatabaseService().deleteActivityDate(
                   id: e.shift_id.toString(),

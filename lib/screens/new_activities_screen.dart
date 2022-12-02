@@ -6,6 +6,7 @@ import 'package:shifts_demo/models/activity_model.dart';
 import 'package:shifts_demo/widgets/common_widgets.dart';
 import '../models/shift_activity_model.dart';
 import '../resources/list_resources.dart';
+import '../utils/internet_checker.dart';
 import '../widgets/alert_box.dart';
 
 class NewActivitiesScreen extends StatefulWidget {
@@ -13,11 +14,13 @@ class NewActivitiesScreen extends StatefulWidget {
       {Key? key,
       required this.data,
       required this.isUpdate,
+      this.index,
       this.activityShiftModel})
       : super(key: key);
 
   final ShiftActivityModel data;
   final bool isUpdate;
+  final int? index;
   final ActivityShiftModel? activityShiftModel;
 
   @override
@@ -93,27 +96,32 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
               title: 'Member',
               hintText: 'Required'),
           const SizedBox(height: 20),
-          materialButton(context, onPressed: () {
+          materialButton(context, onPressed: () async {
             if (widget.isUpdate) {
-              print(widget.activityShiftModel?.id);
-              // if (_controller.text != widget.activityShiftModel?.comments ||
-              //     endTime != widget.activityShiftModel?.endTime ||
-              //     locationName != widget.activityShiftModel?.locationName ||
-              //     activityName != widget.activityShiftModel?.activityName) {
-              //   BlocProvider.of<ActivityBloc>(context).add(UpdateActivity(
-              //       statues: widget.activityShiftModel?.isUploaded
-              //           as UploadingStatues,
-              //       data: widget.data,
-              //       activityModel: ActivityModel(
-              //           id: widget.activityShiftModel?.id,
-              //           shift_id: widget.data.id.toString(),
-              //           activityName: activityName!,
-              //           locationName: locationName!,
-              //           endTime: endTime!,
-              //           comments: _controller.text,
-              //           isUploaded: UploadingStatues.update)));
-              //   Navigator.pop(context);
-              // }
+              if (_controller.text != widget.activityShiftModel?.comments ||
+                  endTime != widget.activityShiftModel?.endTime ||
+                  locationName != widget.activityShiftModel?.locationName ||
+                  activityName != widget.activityShiftModel?.activityName) {
+                if (await InternetChecker().connectionCheck()) {
+                  BlocProvider.of<ActivityBloc>(context).add(UpdateActivity(
+                      index: widget.index as int,
+                      statues: widget.activityShiftModel?.isUploaded
+                          as UploadingStatues,
+                      data: widget.data,
+                      activityModel: ActivityModel(
+                          id: widget.activityShiftModel?.id,
+                          shift_id: widget.data.id.toString(),
+                          activityName: activityName!,
+                          locationName: locationName!,
+                          endTime: endTime!,
+                          comments: _controller.text,
+                          isUploaded: UploadingStatues.update)));
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('No Internet')));
+                }
+              }
             } else {
               if (_controller.text != "" &&
                   endTime != null &&
@@ -138,19 +146,24 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
               final deleteData = await alertDialog(
                   context, 'Confirm', "Are you sure to delete Activity");
               if (deleteData) {
-                BlocProvider.of<ActivityBloc>(context).add(DeleteActivity(
-                    data: widget.data,
-                    activityModel: ActivityModel(
-                        id: widget.activityShiftModel?.id,
-                        shift_id: widget.data.id.toString(),
-                        activityName: activityName!,
-                        locationName: locationName!,
-                        endTime: endTime!,
-                        comments: _controller.text,
-                        isUploaded: UploadingStatues.delete),
-                    statues: widget.activityShiftModel?.isUploaded
-                        as UploadingStatues));
-                Navigator.pop(context);
+                if (await InternetChecker().connectionCheck()) {
+                  BlocProvider.of<ActivityBloc>(context).add(DeleteActivity(
+                      data: widget.data,
+                      activityModel: ActivityModel(
+                          id: widget.activityShiftModel?.id,
+                          shift_id: widget.data.id.toString(),
+                          activityName: activityName!,
+                          locationName: locationName!,
+                          endTime: endTime!,
+                          comments: _controller.text,
+                          isUploaded: UploadingStatues.delete),
+                      statues: widget.activityShiftModel?.isUploaded
+                          as UploadingStatues));
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('No Internet')));
+                }
               }
             }, title: 'Delete', color: const Color.fromARGB(255, 210, 10, 17))
         ]),
