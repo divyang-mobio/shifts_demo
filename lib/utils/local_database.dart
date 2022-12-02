@@ -98,7 +98,7 @@ class DatabaseHelper {
 
   Future<List<ShiftData>> getUnUploadedShiftData() async {
     Database db = await instance.database;
-    var data = await db.query('SHIFT', where: "isUploaded != ?", whereArgs: [0]);
+    var data = await db.query('SHIFT', where: "isUploaded != ?", whereArgs: [1]);
     List<ShiftData> dataList =
         data.isNotEmpty ? data.map((c) => ShiftData.fromJson(c)).toList() : [];
     return dataList;
@@ -107,7 +107,7 @@ class DatabaseHelper {
   Future<List<ActivityModel>> getUnUploadedActivityData() async {
     Database db = await instance.database;
     var data =
-        await db.query('ACTIVITY', where: "isUploaded != ?", whereArgs: [0]);
+        await db.query('ACTIVITY', where: "isUploaded != ?", whereArgs: [1]);
     List<ActivityModel> dataList = data.isNotEmpty
         ? data.map((c) => ActivityModel.fromJson(c)).toList()
         : [];
