@@ -6,6 +6,7 @@ import 'package:shifts_demo/controller/sync_data_bloc/sync_data_bloc.dart';
 import 'package:shifts_demo/screens/activities_screen.dart';
 import 'package:shifts_demo/screens/new_activities_screen.dart';
 import 'controller/open_shift_bloc/open_shift_bloc.dart';
+import 'models/screen_args_model.dart';
 import 'models/shift_activity_model.dart';
 import 'screens/new_shift_screen.dart';
 import 'screens/open_shift_screen.dart';
@@ -54,9 +55,12 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => ActivitiesScreen(data: args));
       case '/newActivities':
-        final args = settings.arguments as ShiftActivityModel;
+        final args = settings.arguments as ScreenArguments;
         return MaterialPageRoute(
-            builder: (context) => NewActivitiesScreen(data: args));
+            builder: (context) => NewActivitiesScreen(
+                data: args.data,
+                isUpdate: args.isUpdate,
+                activityShiftModel: args.activityData));
       default:
         return MaterialPageRoute(builder: (context) => const MyHomePage());
     }

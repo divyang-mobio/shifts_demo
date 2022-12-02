@@ -12,7 +12,7 @@ ActivityModel _$ActivityModelFromJson(Map<String, dynamic> json) =>
       locationName: json['locationName'] as String,
       shift_id: json['shift_id'] as String,
       endTime: json['endTime'] as String,
-      isUploaded: ActivityModel._fromIsUploadJson(json['isUploaded'] as int),
+      isUploaded: ActivityModel._fromUploadJson(json['isUploaded'] as int),
       comments: json['comments'] as String,
     );
 
@@ -23,5 +23,5 @@ Map<String, dynamic> _$ActivityModelToJson(ActivityModel instance) =>
       'comments': instance.comments,
       'endTime': instance.endTime,
       'shift_id': instance.shift_id,
-      'isUploaded': ActivityModel._toIsUploadJson(instance.isUploaded),
+      'isUploaded': ActivityModel._toUploadJson(instance.isUploaded),
     };

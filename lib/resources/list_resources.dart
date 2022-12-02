@@ -29,3 +29,5 @@ List<String> bottomSheetLocationData = [
   "Location G",
   "Location H"
 ];
+
+enum UploadingStatues { success, notUploaded, update, delete }

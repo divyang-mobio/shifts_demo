@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:shifts_demo/models/activity_model.dart';
 import 'package:shifts_demo/models/shift_data_model.dart';
+import 'package:shifts_demo/resources/list_resources.dart';
 import 'package:shifts_demo/utils/local_database.dart';
 
 import '../../models/shift_activity_model.dart';
@@ -25,7 +26,7 @@ class SyncDataBloc extends Bloc<SyncDataEvent, SyncDataState> {
             await DatabaseService().setShiftDate(
                 shiftActivityModel: ShiftActivityModel(
                     activity: [],
-                    isUploaded: true,
+                    isUploaded: UploadingStatues.success,
                     projectName: e.projectName,
                     memberName: e.memberName,
                     date: e.date));
@@ -41,7 +42,7 @@ class SyncDataBloc extends Bloc<SyncDataEvent, SyncDataState> {
                     activityName: e.activityName,
                     locationName: e.locationName,
                     endTime: e.endTime,
-                    isUploaded: true,
+                    isUploaded: UploadingStatues.success,
                     comments: e.comments));
           }
         }

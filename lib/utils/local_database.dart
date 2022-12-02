@@ -78,9 +78,21 @@ class DatabaseHelper {
     return dataList;
   }
 
-  Future<int> deleteActivityData(int id) async {
+  Future<int> deleteActivityData(ActivityModel activityModel) async {
     Database db = await instance.database;
-    return await db.delete('ACTIVITY', where: "id = ?", whereArgs: [id]);
+    return await db.delete('ACTIVITY',
+        where:
+            "activityName = ? and locationName = ? and comments = ? and shift_id = ? and endTime = ?",
+        whereArgs:
+            // return await db.rawDelete(
+            //     'SELECT FROM ACTIVITY WHERE activityName = ? and locationName = ? and comments = ? and shift_id = ? and endTime = ?',
+            [
+          activityModel.activityName,
+          activityModel.locationName,
+          activityModel.comments,
+          activityModel.shift_id,
+          activityModel.endTime
+        ]);
   }
 
   Future<bool> deleteAllData() async {

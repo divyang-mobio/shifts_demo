@@ -32,6 +32,32 @@ class DatabaseService {
     }
   }
 
+  Future<bool> deleteActivityDate(
+      {required String id,
+      required ActivityShiftModel activityShiftModel}) async {
+    try {
+      await shiftCollection.doc(id).update({
+        'activity': FieldValue.arrayRemove([activityShiftModel.toJson()]),
+      });
+      return true;
+    } catch (e) {
+      throw 'error';
+    }
+  }
+
+  Future<bool> updateActivityDate(
+      {required String id,
+      required ActivityShiftModel activityShiftModel}) async {
+    try {
+      await shiftCollection.doc(id).update({
+        'activity': FieldValue.arrayRemove([activityShiftModel.toJson()]),
+      });
+      return true;
+    } catch (e) {
+      throw 'error';
+    }
+  }
+
   Future<List<ShiftActivityModel>> getShift() async {
     try {
       final data =

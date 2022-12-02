@@ -5,6 +5,7 @@ import 'package:shifts_demo/models/activity_model.dart';
 import 'package:shifts_demo/models/shift_activity_model.dart';
 import 'package:shifts_demo/models/shift_data_model.dart';
 import 'package:shifts_demo/utils/local_database.dart';
+import '../../resources/list_resources.dart';
 import '../../utils/firestore_service.dart';
 import '../../utils/internet_checker.dart';
 
@@ -68,7 +69,7 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
         final id = await DatabaseService().setShiftDate(
             shiftActivityModel: ShiftActivityModel(
                 activity: [],
-                isUploaded: true,
+                isUploaded: UploadingStatues.success,
                 projectName: event.projectName,
                 memberName: event.memberName,
                 date: event.dateTime));
@@ -76,7 +77,9 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
         await DatabaseHelper.instance.addShiftData(ShiftData(
             id: id,
             projectName: event.projectName,
-            isUploaded: isInternetAvailable,
+            isUploaded: isInternetAvailable
+                ? UploadingStatues.success
+                : UploadingStatues.notUploaded,
             memberName: event.memberName,
             date: event.dateTime));
 
@@ -88,7 +91,9 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
         await DatabaseHelper.instance.addShiftData(ShiftData(
             id: getRandomString(10),
             projectName: event.projectName,
-            isUploaded: isInternetAvailable,
+            isUploaded: isInternetAvailable
+                ? UploadingStatues.success
+                : UploadingStatues.notUploaded,
             memberName: event.memberName,
             date: event.dateTime));
 

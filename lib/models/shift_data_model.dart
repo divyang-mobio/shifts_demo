@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shifts_demo/resources/list_resources.dart';
 
 part 'shift_data_model.g.dart';
 
@@ -6,8 +7,8 @@ part 'shift_data_model.g.dart';
 class ShiftData {
   String id;
   String projectName, memberName, date;
-  @JsonKey(fromJson: _fromIsUploadJson, toJson: _toIsUploadJson)
-  bool isUploaded;
+  @JsonKey(fromJson: _fromUploadJson, toJson: _toUploadJson)
+  UploadingStatues isUploaded;
 
   ShiftData(
       {required this.id,
@@ -16,18 +17,48 @@ class ShiftData {
       required this.memberName,
       required this.date});
 
-  static bool _fromIsUploadJson(int data) {
-    bool isUploaded = (data == 0) ? false : true;
-    return isUploaded;
+  static UploadingStatues _fromUploadJson(int data) {
+    UploadingStatues statues = statueCheckerFromJson(data);
+    return statues;
   }
 
-  static int _toIsUploadJson(bool data) {
-    int isUploaded = (data) ? 1 : 0;
-    return isUploaded;
+  static int _toUploadJson(UploadingStatues data) {
+    int statues = statueCheckerToJson(data);
+    return statues;
   }
 
   factory ShiftData.fromJson(Map<String, dynamic> json) =>
       _$ShiftDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$ShiftDataToJson(this);
+}
+
+UploadingStatues statueCheckerFromJson(int data) {
+  switch (data) {
+    case 1:
+      return UploadingStatues.success;
+    case 2:
+      return UploadingStatues.notUploaded;
+    case 3:
+      return UploadingStatues.update;
+    case 4:
+      return UploadingStatues.delete;
+    default:
+      return UploadingStatues.notUploaded;
+  }
+}
+
+int statueCheckerToJson(UploadingStatues data) {
+  switch (data) {
+    case UploadingStatues.success:
+      return 1;
+    case UploadingStatues.notUploaded:
+      return 2;
+    case UploadingStatues.update:
+      return 3;
+    case UploadingStatues.delete:
+      return 4;
+    default:
+      return 2;
+  }
 }
