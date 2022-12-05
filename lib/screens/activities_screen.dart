@@ -24,7 +24,12 @@ class _ActivitiesScreenState extends State<ActivitiesScreen> {
           backgroundColor: const Color.fromARGB(255, 38, 89, 153),
           actions: [
             IconButton(
-                onPressed: () {}, icon: const Icon(Icons.info_outline_rounded)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/newShift',
+                      arguments: ShiftScreenArguments(
+                          isUpdate: true, data: widget.data));
+                },
+                icon: const Icon(Icons.info_outline_rounded)),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/newActivities',

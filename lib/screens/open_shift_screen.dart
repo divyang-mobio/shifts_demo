@@ -4,6 +4,7 @@ import 'package:shifts_demo/controller/activity_bloc/activity_bloc.dart';
 import 'package:shifts_demo/resources/list_resources.dart';
 
 import '../controller/open_shift_bloc/open_shift_bloc.dart';
+import '../models/screen_args_model.dart';
 
 class OpenShiftListScreen extends StatefulWidget {
   const OpenShiftListScreen({Key? key}) : super(key: key);
@@ -22,7 +23,9 @@ class _OpenShiftListScreenState extends State<OpenShiftListScreen> {
             actions: [
               IconButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/newShift');
+                    Navigator.pushNamed(context, '/newShift',
+                        arguments: ShiftScreenArguments(
+                            isUpdate: false));
                   },
                   icon: const Icon(Icons.add))
             ]),

@@ -2,21 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shifts_demo/controller/open_shift_bloc/open_shift_bloc.dart';
+import '../models/shift_activity_model.dart';
 import '../resources/list_resources.dart';
-import '../utils/firestore_service.dart';
 import '../widgets/common_widgets.dart';
 
 class NewShiftScreen extends StatefulWidget {
-  const NewShiftScreen({Key? key}) : super(key: key);
+  const NewShiftScreen({Key? key, this.data, required this.isUpdate})
+      : super(key: key);
+
+  final ShiftActivityModel? data;
+  final bool isUpdate;
 
   @override
   State<NewShiftScreen> createState() => _NewShiftScreenState();
 }
 
 class _NewShiftScreenState extends State<NewShiftScreen> {
-  String? projectName;
-  DateTime? dateTime;
+  String? projectName, dateTime;
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    setShiftData();
+    super.initState();
+  }
+
+  setShiftData() {
+    if (widget.isUpdate) {
+      projectName = widget.data?.projectName;
+      dateTime = widget.data?.date;
+      _controller.text = (widget.data?.memberName).toString();
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +59,11 @@ class _NewShiftScreenState extends State<NewShiftScreen> {
           listTile(context,
               leadingIcon: Icons.access_time_rounded,
               title: 'Start',
-              subTitle: (dateTime == null)
-                  ? 'Required'
-                  : DateFormat('dd MMM, kk:mm').format(dateTime!),
+              subTitle: (dateTime == null) ? 'Required' : dateTime!,
               onTap: () async {
-            dateTime = await dateTimeWidgets(context);
-            if (dateTime != null) {
+            DateTime? startTime = await dateTimeWidgets(context);
+            if (startTime != null) {
+              dateTime = DateFormat('dd MMM, kk:mm').format(startTime);
               setState(() {});
             }
           }, isTrailing: false),
@@ -61,12 +78,12 @@ class _NewShiftScreenState extends State<NewShiftScreen> {
                 dateTime != null &&
                 projectName != null) {
               BlocProvider.of<OpenShiftBloc>(context).add(UpLoadData(
-                  dateTime: DateFormat('dd MMM, kk:mm').format(dateTime!),
+                  dateTime: dateTime!,
                   projectName: projectName!,
-                  memberName: _controller.text));
+                  memberName: _controller.text.trim()));
               Navigator.pop(context);
             }
-          }, title: 'Start')
+          }, title: widget.isUpdate ? 'Update' : 'Start')
         ]),
       ),
     );

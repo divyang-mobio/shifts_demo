@@ -98,7 +98,8 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
           const SizedBox(height: 20),
           materialButton(context, onPressed: () async {
             if (widget.isUpdate) {
-              if (_controller.text != widget.activityShiftModel?.comments ||
+              if (_controller.text.trim() !=
+                      widget.activityShiftModel?.comments ||
                   endTime != widget.activityShiftModel?.endTime ||
                   locationName != widget.activityShiftModel?.locationName ||
                   activityName != widget.activityShiftModel?.activityName) {
@@ -134,7 +135,7 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
                         activityName: activityName!,
                         locationName: locationName!,
                         endTime: endTime!,
-                        comments: _controller.text,
+                        comments: _controller.text.trim(),
                         isUploaded: UploadingStatues.notUploaded)));
                 Navigator.pop(context);
               }
@@ -155,7 +156,7 @@ class _NewActivitiesScreenState extends State<NewActivitiesScreen> {
                           activityName: activityName!,
                           locationName: locationName!,
                           endTime: endTime!,
-                          comments: _controller.text,
+                          comments: _controller.text.trim(),
                           isUploaded: UploadingStatues.delete),
                       statues: widget.activityShiftModel?.isUploaded
                           as UploadingStatues));

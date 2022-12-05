@@ -49,7 +49,10 @@ class RouteGenerator {
           builder: (context) => const OpenShiftListScreen(),
         );
       case '/newShift':
-        return MaterialPageRoute(builder: (context) => const NewShiftScreen());
+        final args = settings.arguments as ShiftScreenArguments;
+        return MaterialPageRoute(
+            builder: (context) =>
+                NewShiftScreen(data: args.data, isUpdate: args.isUpdate));
       case '/Activity':
         final args = settings.arguments as ShiftActivityModel;
         return MaterialPageRoute(

@@ -12,3 +12,10 @@ class ScreenArguments {
       required this.data,
       this.activityData});
 }
+
+class ShiftScreenArguments {
+  final ShiftActivityModel? data;
+  final bool isUpdate;
+
+  ShiftScreenArguments({required this.isUpdate, this.data});
+}
