@@ -40,7 +40,7 @@ class _NewShiftScreenState extends State<NewShiftScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("New Shifts"),
+          title: Text(widget.isUpdate ? "Update Shifts" : "New Shifts"),
           backgroundColor: const Color.fromARGB(255, 255, 140, 0)),
       body: SingleChildScrollView(
         child: Column(children: [
@@ -74,14 +74,23 @@ class _NewShiftScreenState extends State<NewShiftScreen> {
               hintText: 'Required'),
           const SizedBox(height: 20),
           materialButton(context, onPressed: () {
-            if (_controller.text != "" &&
-                dateTime != null &&
-                projectName != null) {
-              BlocProvider.of<OpenShiftBloc>(context).add(UpLoadData(
+            if (widget.isUpdate) {
+              BlocProvider.of<OpenShiftBloc>(context).add(UpdateShift(
                   dateTime: dateTime!,
                   projectName: projectName!,
-                  memberName: _controller.text.trim()));
+                  memberName: _controller.text.trim(),
+                  id: (widget.data?.id).toString()));
               Navigator.pop(context);
+            } else {
+              if (_controller.text != "" &&
+                  dateTime != null &&
+                  projectName != null) {
+                BlocProvider.of<OpenShiftBloc>(context).add(UpLoadData(
+                    dateTime: dateTime!,
+                    projectName: projectName!,
+                    memberName: _controller.text.trim()));
+                Navigator.pop(context);
+              }
             }
           }, title: widget.isUpdate ? 'Update' : 'Start')
         ]),

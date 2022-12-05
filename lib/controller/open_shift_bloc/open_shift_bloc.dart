@@ -58,6 +58,34 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
       emit(OpenShiftLoaded(data: data, isInternetConnected: true));
     });
 
+    on<UpdateShift>((event, emit) async {
+      final isInternetAvailable = await InternetChecker().connectionCheck();
+
+      if (isInternetAvailable) {
+        await DatabaseService().updateShiftDate(
+            shiftActivityModel: ShiftData(
+                id: event.id,
+                isUploaded: UploadingStatues.success,
+                projectName: event.projectName,
+                memberName: event.memberName,
+                date: event.dateTime));
+      }
+
+      await DatabaseHelper.instance.updateShift(ShiftData(
+          id: event.id,
+          projectName: event.projectName,
+          isUploaded: isInternetAvailable
+              ? UploadingStatues.success
+              : UploadingStatues.update,
+          memberName: event.memberName,
+          date: event.dateTime));
+
+      List<ShiftActivityModel> data =
+          await DatabaseHelper.instance.getShiftActivityData();
+      emit(OpenShiftLoaded(
+          data: data, isInternetConnected: isInternetAvailable));
+    });
+
     on<UpLoadData>((event, emit) async {
       emit(OpenShiftInitial());
       String? id;

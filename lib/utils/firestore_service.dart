@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shifts_demo/models/shift_activity_model.dart';
+import 'package:shifts_demo/models/shift_data_model.dart';
 
 class DatabaseService {
   final CollectionReference shiftCollection =
@@ -14,6 +15,24 @@ class DatabaseService {
 
       await ids.update({'id': ids.id});
       return ids.id;
+    } catch (e) {
+      throw 'error';
+    }
+  }
+
+  Future<bool> updateShiftDate({
+    required ShiftData shiftActivityModel,
+  }) async {
+    try {
+      await shiftCollection.doc(shiftActivityModel.id).update(ShiftData(
+              id: shiftActivityModel.id.toString(),
+              projectName: shiftActivityModel.projectName,
+              isUploaded: shiftActivityModel.isUploaded,
+              memberName: shiftActivityModel.memberName,
+              date: shiftActivityModel.date)
+          .toJson());
+
+      return true;
     } catch (e) {
       throw 'error';
     }

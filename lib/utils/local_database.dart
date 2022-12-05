@@ -50,6 +50,12 @@ class DatabaseHelper {
     return await db.insert('SHIFT', data.toJson());
   }
 
+  Future<int> updateShift(ShiftData data) async {
+    Database db = await instance.database;
+    return await db
+        .update('SHIFT', data.toJson(), where: "id = ?", whereArgs: [data.id]);
+  }
+
   Future<List<ShiftData>> getShiftData() async {
     Database db = await instance.database;
     var data = await db.query('SHIFT');
@@ -98,7 +104,8 @@ class DatabaseHelper {
 
   Future<List<ShiftData>> getUnUploadedShiftData() async {
     Database db = await instance.database;
-    var data = await db.query('SHIFT', where: "isUploaded != ?", whereArgs: [1]);
+    var data =
+        await db.query('SHIFT', where: "isUploaded != ?", whereArgs: [1]);
     List<ShiftData> dataList =
         data.isNotEmpty ? data.map((c) => ShiftData.fromJson(c)).toList() : [];
     return dataList;

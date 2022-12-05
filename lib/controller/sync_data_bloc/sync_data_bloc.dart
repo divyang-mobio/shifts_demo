@@ -3,7 +3,6 @@ import 'package:shifts_demo/models/activity_model.dart';
 import 'package:shifts_demo/models/shift_data_model.dart';
 import 'package:shifts_demo/resources/list_resources.dart';
 import 'package:shifts_demo/utils/local_database.dart';
-
 import '../../models/shift_activity_model.dart';
 import '../../utils/firestore_service.dart';
 import '../../utils/internet_checker.dart';
@@ -23,13 +22,23 @@ class SyncDataBloc extends Bloc<SyncDataEvent, SyncDataState> {
             await DatabaseHelper.instance.getUnUploadedShiftData();
         if (shiftData.isNotEmpty) {
           for (final e in shiftData) {
-            await DatabaseService().setShiftDate(
-                shiftActivityModel: ShiftActivityModel(
-                    activity: [],
-                    isUploaded: UploadingStatues.success,
-                    projectName: e.projectName,
-                    memberName: e.memberName,
-                    date: e.date));
+            if (e.isUploaded == UploadingStatues.notUploaded) {
+              await DatabaseService().setShiftDate(
+                  shiftActivityModel: ShiftActivityModel(
+                      activity: [],
+                      isUploaded: UploadingStatues.success,
+                      projectName: e.projectName,
+                      memberName: e.memberName,
+                      date: e.date));
+            } else if (e.isUploaded == UploadingStatues.update) {
+              await DatabaseService().updateShiftDate(
+                  shiftActivityModel: ShiftData(
+                      id: e.id,
+                      isUploaded: UploadingStatues.success,
+                      projectName: e.projectName,
+                      memberName: e.memberName,
+                      date: e.date));
+            }
           }
         }
         List<ActivityModel> activityData =

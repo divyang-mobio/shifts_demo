@@ -14,3 +14,13 @@ class UpLoadData extends OpenShiftEvent {
       required this.projectName,
       required this.memberName});
 }
+
+class UpdateShift extends OpenShiftEvent {
+  String projectName, memberName, dateTime, id;
+
+  UpdateShift(
+      {required this.dateTime,
+      required this.id,
+      required this.projectName,
+      required this.memberName});
+}
