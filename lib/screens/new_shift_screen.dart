@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shifts_demo/controller/open_shift_bloc/open_shift_bloc.dart';
+import '../controller/open_shift_bloc/open_shift_bloc.dart';
 import '../models/shift_activity_model.dart';
 import '../resources/list_resources.dart';
 import '../widgets/common_widgets.dart';
@@ -76,6 +76,9 @@ class _NewShiftScreenState extends State<NewShiftScreen> {
           materialButton(context, onPressed: () {
             if (widget.isUpdate) {
               BlocProvider.of<OpenShiftBloc>(context).add(UpdateShift(
+                  status: widget.data?.isUploaded == UploadingStatues.success
+                      ? UploadingStatues.update
+                      : UploadingStatues.notUploaded,
                   dateTime: dateTime!,
                   projectName: projectName!,
                   memberName: _controller.text.trim(),

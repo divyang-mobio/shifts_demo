@@ -1,4 +1,4 @@
-import 'package:shifts_demo/models/shift_activity_model.dart';
+import 'shift_activity_model.dart';
 
 class ScreenArguments {
   final ShiftActivityModel data;

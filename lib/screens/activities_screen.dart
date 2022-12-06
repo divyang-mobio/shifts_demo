@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shifts_demo/controller/activity_bloc/activity_bloc.dart';
-import 'package:shifts_demo/controller/open_shift_bloc/open_shift_bloc.dart';
+import '../controller/activity_bloc/activity_bloc.dart';
+import '../controller/open_shift_bloc/open_shift_bloc.dart';
 import '../models/screen_args_model.dart';
 import '../models/shift_activity_model.dart';
 import '../widgets/common_widgets.dart';

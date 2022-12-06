@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:shifts_demo/models/activity_model.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
-import 'package:shifts_demo/resources/list_resources.dart';
-import 'package:shifts_demo/utils/local_database.dart';
+import '../../models/activity_model.dart';
+import '../../models/shift_data_model.dart';
+import '../../resources/list_resources.dart';
+import '../../utils/local_database.dart';
 import '../../models/shift_activity_model.dart';
 import '../../utils/firestore_service.dart';
 import '../../utils/internet_checker.dart';

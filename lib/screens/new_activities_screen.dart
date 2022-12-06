@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:shifts_demo/controller/activity_bloc/activity_bloc.dart';
-import 'package:shifts_demo/models/activity_model.dart';
-import 'package:shifts_demo/widgets/common_widgets.dart';
+import '../controller/activity_bloc/activity_bloc.dart';
+import '../models/activity_model.dart';
+import '../widgets/common_widgets.dart';
 import '../models/shift_activity_model.dart';
 import '../resources/list_resources.dart';
 import '../utils/internet_checker.dart';

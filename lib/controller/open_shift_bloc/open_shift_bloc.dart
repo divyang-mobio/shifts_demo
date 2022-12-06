@@ -1,10 +1,9 @@
 import 'dart:math';
-
 import 'package:bloc/bloc.dart';
-import 'package:shifts_demo/models/activity_model.dart';
-import 'package:shifts_demo/models/shift_activity_model.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
-import 'package:shifts_demo/utils/local_database.dart';
+import '../../models/activity_model.dart';
+import '../../models/shift_activity_model.dart';
+import '../../models/shift_data_model.dart';
+import '../../utils/local_database.dart';
 import '../../resources/list_resources.dart';
 import '../../utils/firestore_service.dart';
 import '../../utils/internet_checker.dart';
@@ -48,14 +47,13 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
       }
       List<ShiftActivityModel> data =
           await DatabaseHelper.instance.getShiftActivityData();
-      emit(OpenShiftLoaded(
-          data: data, isInternetConnected: isInternetAvailable));
+      emit(OpenShiftLoaded(data: data));
     });
 
     on<DataSynced>((event, emit) async {
       List<ShiftActivityModel> data =
           await DatabaseHelper.instance.getShiftActivityData();
-      emit(OpenShiftLoaded(data: data, isInternetConnected: true));
+      emit(OpenShiftLoaded(data: data));
     });
 
     on<UpdateShift>((event, emit) async {
@@ -74,16 +72,14 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
       await DatabaseHelper.instance.updateShift(ShiftData(
           id: event.id,
           projectName: event.projectName,
-          isUploaded: isInternetAvailable
-              ? UploadingStatues.success
-              : UploadingStatues.update,
+          isUploaded:
+              isInternetAvailable ? UploadingStatues.success : event.status,
           memberName: event.memberName,
           date: event.dateTime));
 
       List<ShiftActivityModel> data =
           await DatabaseHelper.instance.getShiftActivityData();
-      emit(OpenShiftLoaded(
-          data: data, isInternetConnected: isInternetAvailable));
+      emit(OpenShiftLoaded(data: data));
     });
 
     on<UpLoadData>((event, emit) async {
@@ -113,8 +109,7 @@ class OpenShiftBloc extends Bloc<OpenShiftEvent, OpenShiftState> {
 
       List<ShiftActivityModel> data =
           await DatabaseHelper.instance.getShiftActivityData();
-      emit(OpenShiftLoaded(
-          data: data, isInternetConnected: isInternetAvailable));
+      emit(OpenShiftLoaded(data: data));
     });
   }
 }

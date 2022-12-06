@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shifts_demo/models/activity_model.dart';
-import 'package:shifts_demo/models/shift_activity_model.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
+import '../models/activity_model.dart';
+import '../models/shift_activity_model.dart';
+import '../models/shift_data_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {

@@ -17,10 +17,12 @@ class UpLoadData extends OpenShiftEvent {
 
 class UpdateShift extends OpenShiftEvent {
   String projectName, memberName, dateTime, id;
+  UploadingStatues status;
 
   UpdateShift(
       {required this.dateTime,
       required this.id,
+      required this.status,
       required this.projectName,
       required this.memberName});
 }

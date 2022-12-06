@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shifts_demo/models/shift_activity_model.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
+import '../models/shift_activity_model.dart';
+import '../models/shift_data_model.dart';
 
 class DatabaseService {
   final CollectionReference shiftCollection =

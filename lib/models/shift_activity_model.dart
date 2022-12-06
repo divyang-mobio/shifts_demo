@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:shifts_demo/models/shift_data_model.dart';
-
+import 'shift_data_model.dart';
 import '../resources/list_resources.dart';
 
 part 'shift_activity_model.g.dart';

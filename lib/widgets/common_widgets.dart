@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../resources/list_resources.dart';
-
 dateTimeWidgets(context) async {
   DateTime? date = await showDatePicker(
       context: context,

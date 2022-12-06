@@ -6,9 +6,8 @@ class OpenShiftInitial extends OpenShiftState {}
 
 class OpenShiftLoaded extends OpenShiftState {
   List<ShiftActivityModel> data;
-  bool isInternetConnected;
 
-  OpenShiftLoaded({required this.data, required this.isInternetConnected});
+  OpenShiftLoaded({required this.data});
 }
 
 class OpenShiftError extends OpenShiftState {}
